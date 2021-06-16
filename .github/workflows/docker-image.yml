@@ -1,0 +1,32 @@
+name: Docker Image CI
+
+on:
+   push:
+     branches: [ master ]
+   pull_request:
+     branches: [ master ]
+
+jobs:
+
+   build:
+
+     runs-on: ubuntu-latest
+
+     steps:
+     - uses: actions/checkout@v2
+     - name: Build the Docker image
+       run: docker build . --file Dockerfile --tag check
+
+   push_to_registry:
+     name: Push Docker image to Docker Hub
+     runs-on: ubuntu-latest
+     steps:
+       - name: Check out the repo
+         uses: actions/checkout@v2
+       - name: Push to Docker Hub
+         uses: docker/build-push-action@v1
+         with:
+           username: samehzaghbib
+           password: sameh.1996
+           repository: samehzaghbib/testaddons2
+           tag_with_ref: true
